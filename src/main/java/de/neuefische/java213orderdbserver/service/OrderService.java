@@ -9,6 +9,7 @@ import org.springframework.stereotype.Service;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.UUID;
+import java.util.stream.Collectors;
 
 @Service
 public class OrderService {
@@ -26,12 +27,8 @@ public class OrderService {
     }
 
     public Order addOrder(List<String> productIds) {
-        List<Product> productsToOrder = new ArrayList<>();
-        for (String productId : productIds) {
-            Product product = productService.getProductById(productId)
-                    .orElseThrow(() -> new IllegalArgumentException("Product with ID " + productId + " does not exist"));
-            productsToOrder.add(product);
-        }
+        List<Product> productsToOrder = productIds.stream().map(productId -> productService.getProductById(productId)
+                .orElseThrow(() -> new IllegalArgumentException("Product with ID " + productId + " does not exist"))).collect(Collectors.toList());
         String id = generateOrderId();
         Order order = new Order(id, productsToOrder);
         return orderRepository.addOrder(order);

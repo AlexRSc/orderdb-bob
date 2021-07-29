@@ -8,6 +8,7 @@ import org.springframework.stereotype.Service;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
+import java.util.stream.Collectors;
 
 @Service
 public class ProductService {
@@ -28,12 +29,18 @@ public class ProductService {
     }
 
     public List<Product> search(String q) {
-        List<Product> matchingProducts = new ArrayList<>();
+
+        List<Product> matchingProducts = getAllProducts().stream()
+                .filter(product -> product.getName().contains(q)).collect(Collectors.toList());
+        /*
         for (Product product : getAllProducts()) {
             if(product.getName().contains(q)){
                 matchingProducts.add(product);
             }
         }
+        */
         return matchingProducts;
     }
+
+
 }

@@ -3,10 +3,7 @@ package de.neuefische.java213orderdbserver.controller;
 import de.neuefische.java213orderdbserver.model.Product;
 import de.neuefische.java213orderdbserver.service.ProductService;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestParam;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
 
@@ -27,6 +24,11 @@ public class ProductController {
             return productService.getAllProducts();
         }
         return productService.search(q);
+    }
+
+    @GetMapping("/{name}")
+    public List<Product> searchProduct(@PathVariable String name) {
+        return productService.search(name);
     }
 
 
